@@ -1,9 +1,34 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import logo from '../../assets/images/logo.png'
 import registerIMG from '../../assets/images/register.jpg'
 import { FcGoogle } from "react-icons/fc"
+import { useContext } from "react"
+import { AuthContext } from "../../provider/AuthProvider"
+import toast from "react-hot-toast"
 
 const Register = () => {
+  const navigate = useNavigate()
+  const {user,
+    setUser,
+    loading,
+    setLoading,
+    createUser,
+    signIn,
+    signInWithGoogle,
+    logOut,
+    updateUserProfile,} = useContext(AuthContext)
+
+     // google login 
+  const handleGoogleLogin = async () => {
+    try {
+      await signInWithGoogle();
+      toast.success('Sign in with Google Successfully')
+      navigate('/')
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.message)
+    }
+  };
     return (
       <div className='flex justify-center items-center min-h-[calc(100vh-306px)] my-12'>
         <div className='flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg  lg:max-w-4xl '>
@@ -20,7 +45,7 @@ const Register = () => {
               Get Your Free Account Now.
             </p>
   
-            <div className='flex cursor-pointer items-center justify-center mt-4 text-gray-600 transition-colors duration-300 transform border rounded-lg   hover:bg-gray-50 '>
+            <div onClick={handleGoogleLogin} className='flex cursor-pointer items-center justify-center mt-4 text-gray-600 transition-colors duration-300 transform border rounded-lg   hover:bg-gray-50 '>
               <div className='px-4 py-2 flex items-center'>
               <FcGoogle />
               <span className=' px-4 py-3 font-bold text-center'>

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 const Navbar = () => {
 
-    const {user}= useContext(AuthContext)
+    const {user,logOut}= useContext(AuthContext)
     return (
      <div className='bg-base-200 shadow-lg'>
         <div className='navbar  container px-4 mx-auto'>
@@ -34,11 +34,11 @@ const Navbar = () => {
             role='button'
             className='btn btn-ghost btn-circle avatar'
           >
-            <div className='w-10 rounded-full' title=''>
+            <div className='w-10 rounded-full ' title={user?.displayName}>
               <img
                 referrerPolicy='no-referrer'
                 alt='User Profile Photo'
-                src=''
+                src={user?.photoURL}
               />
             </div>
           </div>
@@ -59,7 +59,7 @@ const Navbar = () => {
               <div>Bid Requests</div>
             </li>
             <li className='mt-2'>
-              <button className='bg-gray-200 block text-center'>Logout</button>
+              <button onClick={logOut} className='bg-gray-200 block text-center'>Logout</button>
             </li>
           </ul>
         </div>
