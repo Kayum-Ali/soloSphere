@@ -5,11 +5,14 @@ const TabCategories = () => {
   return (
     <div className="container mx-auto">
       <Tabs>
-        <TabList>
+        <h2>Browse jobs by Categori</h2>
+      <div className="flex items-center justify-center">
+      <TabList>
           <Tab>Web Development</Tab>
           <Tab>Graphics  Design</Tab>
           <Tab>Digital Marktng</Tab>
         </TabList>
+      </div>
 
         <TabPanel>
           <h2>Web Development</h2>
