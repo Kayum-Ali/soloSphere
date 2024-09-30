@@ -10,12 +10,9 @@ const Register = () => {
   const navigate = useNavigate()
   const {user,
     setUser,
-    loading,
     setLoading,
     createUser,
-    signIn,
     signInWithGoogle,
-    logOut,
     updateUserProfile,} = useContext(AuthContext)
 
      // google login 
@@ -29,6 +26,30 @@ const Register = () => {
       toast.error(error?.message)
     }
   };
+
+
+  // register
+  const handleRegister = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    try {
+      const name = e.target.name.value;
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+      const photo = e.target.photo.value;
+      await createUser(email, password)
+      await updateUserProfile(name, photo)
+     setUser({...user, photoURL: photo, displayName: name})
+      toast.success('User registered successfully')
+      navigate('/')
+    } catch (error) {
+      console.error(error)
+      toast.error(error?.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
     return (
       <div className='flex justify-center items-center min-h-[calc(100vh-306px)] my-12'>
         <div className='flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg  lg:max-w-4xl '>
@@ -65,7 +86,7 @@ const Register = () => {
   
               <span className='w-1/5 border-b dark:border-gray-400 lg:w-1/4'></span>
             </div>
-            <form>
+            <form onSubmit={handleRegister}>
               <div className='mt-4'>
                 <label
                   className='block mb-2 text-sm font-medium text-gray-600 '
