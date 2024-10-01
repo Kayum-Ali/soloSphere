@@ -2,8 +2,23 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import JobCard from "./JobCard";
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-const TabCategories = ({ jobs }) => {
+const TabCategories = () => {
+  const [jobs, setJobs] = useState([])
+  const [loadings, setLoading] = useState(true)
+  useEffect(()=>{
+    setLoading(true)
+    const getData = async()=>{
+      const data = await axios(`${import.meta.env.VITE_API_URL}/jobs`)
+      setJobs(data.data)
+    }
+    getData()
+    setLoading(false)
+  },[])
+
+  if(loadings) return <h2>Loading...</h2>
   return (
     <Tabs>
       <div className="container py-10 px-6 mx-auto">
@@ -19,22 +34,30 @@ const TabCategories = ({ jobs }) => {
           <TabList>
             <Tab>Web Development</Tab>
             <Tab>Graphics Design</Tab>
-            <Tab>Digital Marktng</Tab>
+            <Tab>Digital Markting</Tab>
           </TabList>
         </div>
 
         <TabPanel>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8 xl:mt-16">
-            {jobs.map((job) => (
+            {jobs?.filter(j=> j.category === "Web Development").map((job) => (
               <JobCard key={job._id} job={job}></JobCard>
             ))}
           </div>
         </TabPanel>
         <TabPanel>
-          <JobCard></JobCard>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8 xl:mt-16">
+            {jobs?.filter(j=> j.category === "Graphics Design").map((job) => (
+              <JobCard key={job._id} job={job}></JobCard>
+            ))}
+          </div>
         </TabPanel>
         <TabPanel>
-          <JobCard></JobCard>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8 xl:mt-16">
+            {jobs?.filter(j=> j.category === "Digital Marketing").map((job) => (
+              <JobCard key={job._id} job={job}></JobCard>
+            ))}
+          </div>
         </TabPanel>
       </div>
     </Tabs>
