@@ -11,6 +11,8 @@ const JobDetails = () => {
     const job = useLoaderData()
    const {_id,job_title,category,buyer,description, min_price, max_price,deadline} = job
     const {user} = useContext(AuthContext)
+
+
     const handleFromSubmission = async(e)=>{
       e.preventDefault()
         if(user?.email === buyer?.email){
@@ -34,6 +36,7 @@ const JobDetails = () => {
             email,
             buyer,
             status,
+            buyer_email: buyer?.email,
             category,
             job_title
         };

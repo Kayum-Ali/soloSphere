@@ -15,7 +15,7 @@ const AddJob = () => {
         const from = e.target;
         const job_title = from.job_title.value;
         const description = from.description.value;
-        const email = from.email.value;
+        const email = user?.email;
         const category = from.category.value;
         const min_price = parseFloat(from.min_price.value);
         const max_price = parseFloat(from.max_price.value);
