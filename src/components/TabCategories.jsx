@@ -21,7 +21,7 @@ const TabCategories = () => {
   if(loadings) return <h2>Loading...</h2>
   return (
     <Tabs>
-      <div className="container py-10 px-6 mx-auto">
+      <div className="container py-10 px-2 lg:px-6 mx-auto">
         <h2 className="text-2xl lg:text-3xl text-center text-gray-800 capitalize font-semibold">
           Browse jobs by Categori
         </h2>
@@ -30,7 +30,7 @@ const TabCategories = () => {
           development, Graphics design and Digital Matketing. Browse them by
           clicking on the tab bellow
         </p>
-        <div className="flex items-center justify-center">
+        <div className="lg:flex md:flex md:items-center md:justify-center lg:items-center lg:justify-center text-sm md:text-neutral">
           <TabList>
             <Tab>Web Development</Tab>
             <Tab>Graphics Design</Tab>
