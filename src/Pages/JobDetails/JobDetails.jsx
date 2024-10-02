@@ -3,20 +3,28 @@ import { useLoaderData } from "react-router-dom"
 import { AuthContext } from "../../provider/AuthProvider"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const JobDetails = () => {
     const [startDate, setStartDate] = useState(new Date());
     const job = useLoaderData()
-   const {_id,job_title,category,deadline,description,min_price,max_price,buyer_email} = job
+   const {_id,job_title,category,buyer_email,description, min_price, max_price,deadline} = job
     const {user} = useContext(AuthContext)
     const handleFromSubmission = async(e)=>{
-        e.preventDefault()
+        if(user?.email === buyer_email){
+            return toast.error('Action Not Permitted')
+        }
+         e.preventDefault()
         const from = e.target
         const price = parseFloat(from.price.value)
+        if(price < parseFloat(min_price)){
+            return toast.error('offer more or at least equal to minimum price')
+        }
         const jobId = _id
         const deadline = startDate
         const comment = from.comment.value;
-        const email = from.email.value;
+        const email = user?.email;
         const status = 'Pending'
         const bidsData = {
             jobId,
@@ -28,9 +36,18 @@ const JobDetails = () => {
             status,
             category,
             job_title
-        }
+        };
 
-        console.table(bidsData)
+        
+      try {
+        const data = await axios.post(`${import.meta.env.VITE_API_URL}/bid`, bidsData)
+        console.log(data.data)
+      }
+      catch(error){
+        console.log(error)
+
+      }
+
     }
 
    
@@ -41,20 +58,20 @@ const JobDetails = () => {
         <div className='flex-1  px-4 py-7 bg-white rounded-md shadow-md md:min-h-[350px]'>
           <div className='flex items-center justify-between'>
             <span className='text-sm font-light text-gray-800 '>
-              Deadline: {job.deadline}
+              Deadline: {deadline}
             </span>
             <span className='px-4 py-1 text-xs text-blue-800 uppercase bg-blue-200 rounded-full '>
-            {job.category}
+            {category}
             </span>
           </div>
   
           <div>
             <h1 className='mt-2 text-3xl font-semibold text-gray-800 '>
-            {job.job_title}
+            {job_title}
             </h1>
   
             <p className='mt-2 text-lg text-gray-600 '>
-            {job.description}
+            {description}
             </p>
             <p className='mt-6 text-sm font-bold text-gray-600 '>
               Buyer Details:
@@ -71,7 +88,7 @@ const JobDetails = () => {
               </div>
             </div>
             <p className='mt-6 text-lg font-bold text-gray-600 '>
-              Range: ${job.min_price} - ${job.max_price}
+              Range: ${min_price} - ${max_price}
             </p>
           </div>
         </div>
