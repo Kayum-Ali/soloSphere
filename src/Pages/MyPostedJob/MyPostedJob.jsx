@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "../../provider/AuthProvider"
 import axios from "axios"
+import Swal from 'sweetalert2'
 
 const MyPostedJob = () => {
     const {user} = useContext(AuthContext)
@@ -29,6 +30,12 @@ const MyPostedJob = () => {
             confirmButtonText: "Yes, delete it!"
           }).then((result) => {
             if (result.isConfirmed) {
+                try {
+                     axios.delete(`${import.meta.env.VITE_API_URL}/job/${_id}`)
+                    setJobs(jobs.filter(job => job._id!== _id))
+                } catch (error) {
+                    console.error(error)
+                }
               Swal.fire({
                 title: "Deleted!",
                 text: "Your file has been deleted.",
@@ -36,12 +43,7 @@ const MyPostedJob = () => {
               });
             }
           });
-        try {
-            await axios.delete(`${import.meta.env.VITE_API_URL}/job/${_id}`)
-            setJobs(jobs.filter(job => job._id!== _id))
-        } catch (error) {
-            console.error(error)
-        }
+        
     }
     return (
       <section className='container px-4 mx-auto pt-12'>
@@ -121,8 +123,12 @@ const MyPostedJob = () => {
                         <td className='px-4 py-4 text-sm whitespace-nowrap'>
                           <div className='flex items-center gap-x-2'>
                             <p
-                              className='px-3 py-1 rounded-full text-blue-500 bg-blue-100/60
-                               text-xs'
+                              className={`px-3 py-1 rounded-full 
+                                ${job.category === 'Web Development' && 'text-blue-500 bg-blue-100/60'}
+                                ${job.category === 'Graphics Design' && 'text-emerald-500 bg-emerald-100/60'}
+                                ${job.category === 'Digital Marketing' && 'text-pink-500 bg-pink-100/60'}
+
+                               text-xs `}
                             >
                               {job.category}
                             </p>
@@ -132,7 +138,7 @@ const MyPostedJob = () => {
                           title=''
                           className='px-4 py-4 text-sm text-gray-500  whitespace-nowrap'
                         >
-                         {job.description}
+                         {job.description.slice(0,20)}
                         </td>
                         <td className='px-4 py-4 text-sm whitespace-nowrap'>
                           <div className='flex items-center gap-x-6'>
