@@ -9,13 +9,13 @@ import toast from "react-hot-toast";
 const JobDetails = () => {
     const [startDate, setStartDate] = useState(new Date());
     const job = useLoaderData()
-   const {_id,job_title,category,buyer_email,description, min_price, max_price,deadline} = job
+   const {_id,job_title,category,buyer,description, min_price, max_price,deadline} = job
     const {user} = useContext(AuthContext)
     const handleFromSubmission = async(e)=>{
-        if(user?.email === buyer_email){
+      e.preventDefault()
+        if(user?.email === buyer?.email){
             return toast.error('Action Not Permitted')
         }
-         e.preventDefault()
         const from = e.target
         const price = parseFloat(from.price.value)
         if(price < parseFloat(min_price)){
@@ -32,7 +32,7 @@ const JobDetails = () => {
             deadline,
             comment,
             email,
-            buyer_email,
+            buyer,
             status,
             category,
             job_title
@@ -58,7 +58,7 @@ const JobDetails = () => {
         <div className='flex-1  px-4 py-7 bg-white rounded-md shadow-md md:min-h-[350px]'>
           <div className='flex items-center justify-between'>
             <span className='text-sm font-light text-gray-800 '>
-              Deadline: {deadline}
+              Deadline: {new Date(deadline).toLocaleDateString()}
             </span>
             <span className='px-4 py-1 text-xs text-blue-800 uppercase bg-blue-200 rounded-full '>
             {category}
@@ -78,13 +78,13 @@ const JobDetails = () => {
             </p>
             <div className='flex items-center gap-5'>
               <div>
-                <p className='mt-2 text-sm  text-gray-600 '>Name: Jhankar Vai.</p>
+                <p className='mt-2 text-sm  text-gray-600 '>Name: {buyer?.name}</p>
                 <p className='mt-2 text-sm  text-gray-600 '>
-                  Email: jhankar@mahbub.com
+                  Email: {buyer?.email}
                 </p>
               </div>
               <div className='rounded-full object-cover overflow-hidden w-14 h-14'>
-                <img src='' alt='' />
+                <img src={buyer?.photo} alt='' />
               </div>
             </div>
             <p className='mt-6 text-lg font-bold text-gray-600 '>
@@ -107,8 +107,9 @@ const JobDetails = () => {
                 </label>
                 <input
                   id='price'
-                  type='text'
+                  type='number'
                   name='price'
+                  required
                   className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md   focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                 />
               </div>
@@ -135,6 +136,7 @@ const JobDetails = () => {
                   id='comment'
                   name='comment'
                   type='text'
+                  required
                   className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md   focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                 />
               </div>
@@ -142,7 +144,7 @@ const JobDetails = () => {
                 <label className='text-gray-700'>Deadline</label>
   
                 {/* Date Picker Input Field */}
-                <DatePicker className="border p-2 rounded-md" selected={startDate} onChange={(date) => setStartDate(date)} />
+                <DatePicker className="border p-2 rounded-md" required selected={startDate} onChange={(date) => setStartDate(date)} />
               </div>
             </div>
   

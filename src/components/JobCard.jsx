@@ -6,7 +6,8 @@ const JobCard = ({job}) => {
       <Link to={`/job/${job._id}`} className='w-full max-w-sm px-4 py-3 bg-white rounded-md shadow-md hover:scale-[1.05] transition-all'>
         <div className='flex items-center justify-between'>
           <span className='text-xs font-light text-gray-800 '>
-            Deadline: 20/12/2024
+          Deadline: {new Date(job.deadline).toLocaleDateString()}
+
           </span>
           <span className='px-3 py-1 text-[8px] text-blue-800 uppercase bg-blue-200 rounded-full '>
            {job.category}
@@ -37,6 +38,7 @@ const JobCard = ({job}) => {
       min_price: PropTypes.number.isRequired,
       max_price: PropTypes.number.isRequired,
       _id: PropTypes.string.isRequired,
+      deadline: PropTypes.instanceOf(Date).isRequired,
     }).isRequired,
   }
 
