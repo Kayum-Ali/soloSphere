@@ -3,6 +3,7 @@ import { useLoaderData, useNavigate } from "react-router-dom"
 import { AuthContext } from "../../provider/AuthProvider"
 import axios from "axios"
 import DatePicker from "react-datepicker"
+import toast from "react-hot-toast"
 
 const UpdateJob = () => {
     const updatedJob = useLoaderData()
@@ -35,10 +36,11 @@ const UpdateJob = () => {
         }
      }
      try{
-      const {data} =  await axios.put(`${import.meta.env.VITE_API_URL}/job/${_id}`)
-       navigate('/jobs')
+        await axios.put(`${import.meta.env.VITE_API_URL}/job/${_id}`, updatedData)
+      toast.success('Job Data updated successfully')
+       navigate('/my-posted-job')
      }catch(error){
-       console.error(error)
+      toast.error(error.message)
      }
    }
     
@@ -49,7 +51,7 @@ const UpdateJob = () => {
             Update a Job
           </h2>
   
-          <form>
+          <form onSubmit={handleUpdate}>
             <div className='grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'>
               <div>
                 <label className='text-gray-700 ' htmlFor='job_title'>
