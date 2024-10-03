@@ -11,7 +11,10 @@ const UpdateJob = () => {
    const {_id,job_title,description,buyer,category,min_price,max_price,deadline} = updatedJob
 
    const {user} = useContext(AuthContext)
-   const [startDate, setStartDate] = useState(new Date(deadline) || new Date())
+
+  
+   const [startDate, setStartDate] = useState(deadline ? new Date(deadline) : new Date());
+
    const handleUpdate = async(e)=>{
      e.preventDefault()
      const from = e.target;
