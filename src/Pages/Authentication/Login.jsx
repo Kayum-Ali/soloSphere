@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import loginIMG from "../../assets/images/login.jpg";
 import { FcGoogle } from "react-icons/fc";
 import logo from '../../assets/images/logo.png'
@@ -10,12 +10,14 @@ import toast from "react-hot-toast";
 const Login = () => {
   const {signIn,signInWithGoogle,} = useContext(AuthContext);
   const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state || '/'
   // google login 
   const handleGoogleLogin = async () => {
     try {
       await signInWithGoogle();
       toast.success('Sign in with Google Successfully')
-      navigate('/')
+      navigate(from, {replace: true});
     } catch (error) {
       console.error(error);
       toast.error(error?.message)
@@ -30,7 +32,8 @@ const Login = () => {
       const result = await signIn(email.value, password.value);
       console.log(result)
       toast.success('Sign in Successfully')
-      navigate('/')
+      navigate(from, {replace: true});
+
     } catch (error) {
       console.error(error);
       toast.error(error?.message)

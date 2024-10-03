@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import logo from '../../assets/images/logo.png'
 import registerIMG from '../../assets/images/register.jpg'
 import { FcGoogle } from "react-icons/fc"
@@ -8,6 +8,8 @@ import toast from "react-hot-toast"
 
 const Register = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state || '/'
   const {user,
     setUser,
     setLoading,
@@ -20,7 +22,8 @@ const Register = () => {
     try {
       await signInWithGoogle();
       toast.success('Sign in with Google Successfully')
-      navigate('/')
+      navigate(from, {replace: true});
+
     } catch (error) {
       console.error(error);
       toast.error(error?.message)
@@ -41,7 +44,8 @@ const Register = () => {
       await updateUserProfile(name, photo)
      setUser({...user, photoURL: photo, displayName: name})
       toast.success('User registered successfully')
-      navigate('/')
+      navigate(from, {replace: true});
+
     } catch (error) {
       console.error(error)
       toast.error(error?.message)
