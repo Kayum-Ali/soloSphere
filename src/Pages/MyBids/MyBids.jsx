@@ -16,7 +16,12 @@ const MyBids = () => {
           getData();
     }, [user])
 
-    console.log(bids)
+    const handleStatus = async (id)=>{
+       
+    
+         await axios.patch(`${import.meta.env.VITE_API_URL}/update-status/${id}`, {status : 'Complete'})
+        setBids(bids.map(bid=> bid._id === id? {...bid, status:'Complete'}: bid))
+       }
     return (
       <section className='container px-4 mx-auto pt-12'>
         <div className='flex items-center gap-x-3'>
