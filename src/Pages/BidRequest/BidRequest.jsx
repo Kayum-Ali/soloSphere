@@ -42,7 +42,7 @@ const BidRequest = () => {
                     <tr>
                       <th
                         scope='col'
-                        className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500'
+                        className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right '
                       >
                         <div className='flex items-center gap-x-3'>
                           <span>Title</span>
@@ -50,7 +50,7 @@ const BidRequest = () => {
                       </th>
                       <th
                         scope='col'
-                        className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500'
+                        className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right '
                       >
                         <div className='flex items-center gap-x-3'>
                           <span>Email</span>
@@ -59,14 +59,14 @@ const BidRequest = () => {
   
                       <th
                         scope='col'
-                        className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500'
+                        className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right '
                       >
                         <span>Deadline</span>
                       </th>
   
                       <th
                         scope='col'
-                        className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500'
+                        className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right '
                       >
                         <button className='flex items-center gap-x-2'>
                           <span>Price</span>
@@ -75,19 +75,19 @@ const BidRequest = () => {
   
                       <th
                         scope='col'
-                        className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500'
+                        className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right '
                       >
                         Category
                       </th>
   
                       <th
                         scope='col'
-                        className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500'
+                        className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right '
                       >
                         Status
                       </th>
   
-                      <th className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500'>
+                      <th className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right '>
                         Actions
                       </th>
                     </tr>
@@ -95,18 +95,18 @@ const BidRequest = () => {
                   <tbody className='bg-white divide-y divide-gray-200 '>
                    {bids.map((bid)=>(
                      <tr key={bid._id}>
-                     <td className='px-4 py-4 text-sm text-gray-500  whitespace-nowrap'>
+                     <td className='px-4 py-4 text-sm  whitespace-nowrap'>
                       {bid.job_title}
                      </td>
-                     <td className='px-4 py-4 text-sm text-gray-500  whitespace-nowrap'>
+                     <td className='px-4 py-4 text-sm  whitespace-nowrap'>
                       {bid.email}
                      </td>
  
-                     <td className='px-4 py-4 text-sm text-gray-500  whitespace-nowrap'>
+                     <td className='px-4 py-4 text-sm   whitespace-nowrap'>
                        {new Date(bid.deadline).toLocaleDateString()}
                      </td>
  
-                     <td className='px-4 py-4 text-sm text-gray-500  whitespace-nowrap'>
+                     <td className='px-4 py-4 text-sm whitespace-nowrap'>
                        ${bid.price}
                      </td>
                      <td className='px-4 py-4 text-sm whitespace-nowrap'>
@@ -123,7 +123,7 @@ const BidRequest = () => {
                             </p>
                        </div>
                      </td>
-                     <td className='px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap'>
+                     <td className='px-4 py-4 text-sm font-medium  whitespace-nowrap'>
                      <div className={`inline-flex items-center px-3 py-1 rounded-full gap-x-2 
                             ${bid.status === 'Pending' && 'bg-yellow-100/60 text-yellow-500'}
                             ${bid.status === 'In Progress' && 'bg-blue-100/60 text-blue-500'}
@@ -140,12 +140,12 @@ const BidRequest = () => {
                           </div>
                      </td>
                      <td className='px-4 py-4 text-sm whitespace-nowrap'>
-                       <div className='flex items-center gap-x-6'>
+                       <div className={`flex items-center gap-x-6 ${bid.status === 'Complete' && 'text-gray-500'}`}>
                         {/* accept btn in progress */}
                          <button onClick={()=> handleStatus(bid._id, bid.status, 'In Progress')} 
                          disabled= {bid.status === "Complete"}
                          
-                         className='text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none'>
+                         className=' transition-colors duration-200   hover:text-red-500 focus:outline-none'>
                            <svg
                              xmlns='http://www.w3.org/2000/svg'
                              fill='none'
@@ -165,7 +165,7 @@ const BidRequest = () => {
                         {/* rejected btn  */}
                         <button onClick={()=> handleStatus(bid._id, bid.status, 'Rejected')} 
                          disabled= {bid.status === "Complete"}
-                          className='text-gray-500 transition-colors duration-200   hover:text-yellow-500 focus:outline-none'>
+                          className=' transition-colors duration-200   hover:text-yellow-500 focus:outline-none'>
                            <svg
                              xmlns='http://www.w3.org/2000/svg'
                              fill='none'

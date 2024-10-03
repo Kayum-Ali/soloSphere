@@ -5,6 +5,7 @@ import { FcGoogle } from "react-icons/fc"
 import { useContext, useEffect } from "react"
 import { AuthContext } from "../../provider/AuthProvider"
 import toast from "react-hot-toast"
+import axios from "axios"
 
 const Register = () => {
   const navigate = useNavigate()
@@ -27,12 +28,13 @@ const Register = () => {
      // google login 
   const handleGoogleLogin = async () => {
     try {
-      await signInWithGoogle();
+     const result =  await signInWithGoogle();
+       await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {email: result?.user?.email}, {withCredentials: true})
       toast.success('Sign in with Google Successfully')
       navigate(from, {replace: true});
 
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       toast.error(error?.message)
     }
   };
@@ -47,14 +49,16 @@ const Register = () => {
       const email = e.target.email.value;
       const password = e.target.password.value;
       const photo = e.target.photo.value;
-      await createUser(email, password)
+     const result = await createUser(email, password)
       await updateUserProfile(name, photo)
-     setUser({...user, photoURL: photo, displayName: name})
+     setUser({...result?.user, photoURL: photo, displayName: name})
+
+     await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {email: result?.user?.email}, {withCredentials: true})
       toast.success('User registered successfully')
       navigate(from, {replace: true});
 
     } catch (error) {
-      console.error(error)
+      // console.error(error)
       toast.error(error?.message)
     } finally {
       setLoading(false)

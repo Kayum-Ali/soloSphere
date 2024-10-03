@@ -65,7 +65,7 @@ const TabCategories = () => {
 };
 
 TabCategories.propTypes = {
-  jobs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  jobs: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default TabCategories;
