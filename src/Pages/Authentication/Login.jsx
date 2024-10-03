@@ -23,7 +23,7 @@ const Login = () => {
     try {
       const result = await signInWithGoogle();
       await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {email: result?.user?.email}, {withCredentials: true})
-      console.log(data)
+     
       toast.success('Sign in with Google Successfully')
       navigate(from, {replace: true});
     } catch (error) {
