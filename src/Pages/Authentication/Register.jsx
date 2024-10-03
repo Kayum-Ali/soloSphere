@@ -2,21 +2,28 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import logo from '../../assets/images/logo.png'
 import registerIMG from '../../assets/images/register.jpg'
 import { FcGoogle } from "react-icons/fc"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { AuthContext } from "../../provider/AuthProvider"
 import toast from "react-hot-toast"
 
 const Register = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const from = location.state || '/'
   const {user,
     setUser,
     setLoading,
+    loading,
     createUser,
     signInWithGoogle,
     updateUserProfile,} = useContext(AuthContext)
-
+    useEffect(()=>{
+      if (user) {
+        navigate('/')
+     
+      }
+    },[navigate, user])
+    
+    const from = location.state || '/'
      // google login 
   const handleGoogleLogin = async () => {
     try {
@@ -53,6 +60,7 @@ const Register = () => {
       setLoading(false)
     }
   }
+  if(user || loading) return
 
     return (
       <div className='flex justify-center items-center min-h-[calc(100vh-306px)] my-12'>
