@@ -36,7 +36,6 @@ const JobDetails = () => {
             email,
             buyer,
             status,
-            buyer_email: buyer?.email,
             category,
             job_title
         };
