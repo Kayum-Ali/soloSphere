@@ -3,15 +3,18 @@ import { AuthContext } from "../../provider/AuthProvider"
 import axios from "axios"
 import Swal from 'sweetalert2'
 import { Link } from "react-router-dom"
+import useAxiosSecure from "../../hooks/useAxiosSecure"
+import useAuth from "../../hooks/useAuth"
 
 const MyPostedJob = () => {
-    const {user} = useContext(AuthContext)
+  const axiosSecure = useAxiosSecure()
+    const {user} = useAuth()
     const [jobs, setJobs] = useState([])
 
     useEffect( () => {
 
         const getData = async () => {
-            const {data} = await axios(`${import.meta.env.VITE_API_URL}/jobs/${user?.email}`,{withCredentials : true})
+            const {data} = await axiosSecure(`/jobs/${user?.email}`)
 
             setJobs(data)
           }
