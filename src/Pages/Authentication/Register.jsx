@@ -2,10 +2,12 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import logo from '../../assets/images/logo.png'
 import registerIMG from '../../assets/images/register.jpg'
 import { FcGoogle } from "react-icons/fc"
-import { useContext, useEffect } from "react"
-import { AuthContext } from "../../provider/AuthProvider"
+
 import toast from "react-hot-toast"
-import axios from "axios"
+
+import useAuth from "../../hooks/useAuth"
+import useAxiosSecure from "../../hooks/useAxiosSecure"
+import { useEffect } from "react"
 
 const Register = () => {
   const navigate = useNavigate()
@@ -16,7 +18,8 @@ const Register = () => {
     loading,
     createUser,
     signInWithGoogle,
-    updateUserProfile,} = useContext(AuthContext)
+    updateUserProfile,} = useAuth()
+    const axiosSecure = useAxiosSecure()
     useEffect(()=>{
       if (user) {
         navigate('/')
@@ -29,7 +32,7 @@ const Register = () => {
   const handleGoogleLogin = async () => {
     try {
      const result =  await signInWithGoogle();
-       await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {email: result?.user?.email}, {withCredentials: true})
+       await axiosSecure.post(`/jwt`, {email: result?.user?.email})
       toast.success('Sign in with Google Successfully')
       navigate(from, {replace: true});
 
@@ -53,7 +56,7 @@ const Register = () => {
       await updateUserProfile(name, photo)
      setUser({...result?.user, photoURL: photo, displayName: name})
 
-     await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {email: result?.user?.email}, {withCredentials: true})
+     await axiosSecure.post(`/jwt`, {email: result?.user?.email})
       toast.success('User registered successfully')
       navigate(from, {replace: true});
 

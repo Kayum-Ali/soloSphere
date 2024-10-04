@@ -1,16 +1,19 @@
-import { useContext, useState } from "react"
+import {  useState } from "react"
 import { useLoaderData, useNavigate } from "react-router-dom"
-import { AuthContext } from "../../provider/AuthProvider"
-import axios from "axios"
+
+
 import DatePicker from "react-datepicker"
 import toast from "react-hot-toast"
+import useAuth from "../../hooks/useAuth"
+import useAxiosSecure from "../../hooks/useAxiosSecure"
 
 const UpdateJob = () => {
     const updatedJob = useLoaderData()
     const navigate = useNavigate()
    const {_id,job_title,description,buyer,category,min_price,max_price,deadline} = updatedJob
 
-   const {user} = useContext(AuthContext)
+   const {user} = useAuth()
+   const axiosSecure = useAxiosSecure()
 
   
    const [startDate, setStartDate] = useState(deadline ? new Date(deadline) : new Date());
@@ -39,7 +42,7 @@ const UpdateJob = () => {
         }
      }
      try{
-        await axios.put(`${import.meta.env.VITE_API_URL}/job/${_id}`, updatedData)
+        await axiosSecure.put(`/job/${_id}`, updatedData)
       toast.success('Job Data updated successfully')
        navigate('/my-posted-job')
      }catch(error){

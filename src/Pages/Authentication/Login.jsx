@@ -2,14 +2,17 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import loginIMG from "../../assets/images/login.jpg";
 import { FcGoogle } from "react-icons/fc";
 import logo from '../../assets/images/logo.png'
-import { useContext, useEffect } from "react";
-import { AuthContext } from "../../provider/AuthProvider";
+import { useEffect } from "react";
+
 import toast from "react-hot-toast";
-import axios from "axios";
+
+import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 
 const Login = () => {
-  const {signIn,signInWithGoogle,user, loading} = useContext(AuthContext);
+  const {signIn,signInWithGoogle,user, loading} = useAuth()
+  const axiosSecure = useAxiosSecure()
   const navigate = useNavigate()
   const location = useLocation()
   useEffect(()=>{
@@ -22,7 +25,7 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithGoogle();
-      await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {email: result?.user?.email}, {withCredentials: true})
+      await axiosSecure.post(`/jwt`, {email: result?.user?.email}, )
      
       toast.success('Sign in with Google Successfully')
       navigate(from, {replace: true});
@@ -38,7 +41,7 @@ const Login = () => {
     const { email, password } = e.target;
     try {
       const result = await signIn(email.value, password.value);
-       await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {email: result?.user?.email}, {withCredentials: true})
+       await axiosSecure.post(`/jwt`, {email: result?.user?.email})
       // console.log(result)
       toast.success('Sign in Successfully')
       navigate(from, {replace: true});

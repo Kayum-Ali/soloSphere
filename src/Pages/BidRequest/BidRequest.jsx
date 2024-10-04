@@ -1,16 +1,18 @@
-import { useContext, useEffect, useState } from "react"
-import { AuthContext } from "../../provider/AuthProvider"
-import axios from "axios"
+import {  useEffect, useState } from "react"
+
 import toast from "react-hot-toast"
+import useAuth from "../../hooks/useAuth"
+import useAxiosSecure from "../../hooks/useAxiosSecure"
 
 const BidRequest = () => {
-    const {user} = useContext(AuthContext)
+    const {user} = useAuth()
+    const axiosSecure = useAxiosSecure()
     const [bids, setBids] = useState([])
     
     useEffect( () => {
 
         const getData = async () => {
-            const {data} = await axios(`${import.meta.env.VITE_API_URL}/bid-request/${user?.email}`)
+            const {data} = await axiosSecure(`/bid-request/${user?.email}`)
 
             setBids(data)
           }
@@ -20,7 +22,7 @@ const BidRequest = () => {
    const handleStatus = async (id, prevStatus, status)=>{
     if(prevStatus === status) return toast.error('Status Already Updated')
     console.log(id, prevStatus, status)
-     await axios.patch(`${import.meta.env.VITE_API_URL}/update-status/${id}`, {status})
+     await axiosSecure.patch(`/update-status/${id}`, {status})
     setBids(bids.map(bid=> bid._id === id? {...bid, status}: bid))
    }
     return (

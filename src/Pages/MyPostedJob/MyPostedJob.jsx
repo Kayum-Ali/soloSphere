@@ -1,6 +1,5 @@
-import { useContext, useEffect, useState } from "react"
-import { AuthContext } from "../../provider/AuthProvider"
-import axios from "axios"
+import { useEffect, useState } from "react"
+
 import Swal from 'sweetalert2'
 import { Link } from "react-router-dom"
 import useAxiosSecure from "../../hooks/useAxiosSecure"
@@ -35,7 +34,7 @@ const MyPostedJob = () => {
           }).then((result) => {
             if (result.isConfirmed) {
                 try {
-                     axios.delete(`${import.meta.env.VITE_API_URL}/job/${_id}`)
+                     axiosSecure.delete(`/job/${_id}`)
                     setJobs(jobs.filter(job => job._id!== _id))
                 } catch (error) {
                     console.error(error)
