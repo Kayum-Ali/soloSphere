@@ -3,27 +3,36 @@ import {  useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import useAuth from "../../hooks/useAuth"
 import useAxiosSecure from "../../hooks/useAxiosSecure"
+import { useQuery } from "@tanstack/react-query"
 
 const BidRequest = () => {
     const {user} = useAuth()
     const axiosSecure = useAxiosSecure()
     const [bids, setBids] = useState([])
+    const {data , isPending} = useQuery( 
+      {
+        queryKey: ['bids'],
+        queryFn: ()=> getData(),
+      })
     
     useEffect( () => {
 
-        const getData = async () => {
-            const {data} = await axiosSecure(`/bid-request/${user?.email}`)
-
-            setBids(data)
-          }
+       
           getData();
     }, [user])
+
+    const getData = async () => {
+      const {data} = await axiosSecure(`/bid-request/${user?.email}`)
+
+      setBids(data)
+    }
 
    const handleStatus = async (id, prevStatus, status)=>{
     if(prevStatus === status) return toast.error('Status Already Updated')
     console.log(id, prevStatus, status)
      await axiosSecure.patch(`/update-status/${id}`, {status})
-    setBids(bids.map(bid=> bid._id === id? {...bid, status}: bid))
+     getData()
+    // setBids(bids.map(bid=> bid._id === id? {...bid, status}: bid))
    }
     return (
       <section className='container px-4 mx-auto pt-12'>
