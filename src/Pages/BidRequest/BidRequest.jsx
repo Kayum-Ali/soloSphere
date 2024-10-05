@@ -3,16 +3,36 @@
 import toast from "react-hot-toast"
 import useAuth from "../../hooks/useAuth"
 import useAxiosSecure from "../../hooks/useAxiosSecure"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 
 const BidRequest = () => {
     const {user} = useAuth()
     const axiosSecure = useAxiosSecure()
     // const [bids, setBids] = useState([])
-    const {data: bids = [] , isLoading, isError, error} = useQuery( 
+    const {data: bids = [] ,
+       isLoading, 
+       isError,
+        error,
+        refetch
+      } = useQuery( 
       {
         queryKey: ['bids'],
         queryFn: ()=> getData(),
+      })
+
+      const {mutateAsync} = useMutation({
+        mutationFn: async ({id, status}) => {
+         const {data} = await axiosSecure.patch(`/update-status/${id}`, {status})
+         return data
+        },
+        onError: (error) => {
+          toast.error(`Failed to update status ${error}`)
+        }, 
+        onSuccess: ()=>{
+          toast.success('Status Updated Successfully')
+          refetch()
+
+        }
       })
     
     // useEffect( () => {
@@ -29,9 +49,8 @@ const BidRequest = () => {
 
    const handleStatus = async (id, prevStatus, status)=>{
     if(prevStatus === status) return toast.error('Status Already Updated')
-    console.log(id, prevStatus, status)
-     await axiosSecure.patch(`/update-status/${id}`, {status})
-     getData()
+    
+    await mutateAsync({id, status})
     // setBids(bids.map(bid=> bid._id === id? {...bid, status}: bid))
    }
 
