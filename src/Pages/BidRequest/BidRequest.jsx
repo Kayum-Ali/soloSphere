@@ -3,11 +3,12 @@
 import toast from "react-hot-toast"
 import useAuth from "../../hooks/useAuth"
 import useAxiosSecure from "../../hooks/useAxiosSecure"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 const BidRequest = () => {
     const {user} = useAuth()
     const axiosSecure = useAxiosSecure()
+    const queryClient = useQueryClient()
     // const [bids, setBids] = useState([])
     const {data: bids = [] ,
        isLoading, 
@@ -30,7 +31,9 @@ const BidRequest = () => {
         }, 
         onSuccess: ()=>{
           toast.success('Status Updated Successfully')
-          refetch()
+          // refetch()
+          queryClient.invalidateQueries({ queryKey: ['bids']})
+
 
         }
       })
