@@ -1,4 +1,4 @@
-import {  useEffect, useState } from "react"
+// import {  useEffect, useState } from "react"
 
 import toast from "react-hot-toast"
 import useAuth from "../../hooks/useAuth"
@@ -8,23 +8,23 @@ import { useQuery } from "@tanstack/react-query"
 const BidRequest = () => {
     const {user} = useAuth()
     const axiosSecure = useAxiosSecure()
-    const [bids, setBids] = useState([])
-    const {data , isPending} = useQuery( 
+    // const [bids, setBids] = useState([])
+    const {data: bids = [] , isLoading, isError, error} = useQuery( 
       {
         queryKey: ['bids'],
         queryFn: ()=> getData(),
       })
     
-    useEffect( () => {
+    // useEffect( () => {
 
        
-          getData();
-    }, [user])
+    //       getData();
+    // }, [user])
 
     const getData = async () => {
       const {data} = await axiosSecure(`/bid-request/${user?.email}`)
-
-      setBids(data)
+        return data
+      // setBids(data)
     }
 
    const handleStatus = async (id, prevStatus, status)=>{
@@ -33,6 +33,12 @@ const BidRequest = () => {
      await axiosSecure.patch(`/update-status/${id}`, {status})
      getData()
     // setBids(bids.map(bid=> bid._id === id? {...bid, status}: bid))
+   }
+
+   if(isLoading) return  <span className="loading flex justify-center items-center h-screen mx-auto loading-bars loading-lg"></span>
+
+   if(isError || error){
+    console.log(isError, error)
    }
     return (
       <section className='container px-4 mx-auto pt-12'>
