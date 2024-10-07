@@ -27,7 +27,8 @@ const BidRequest = () => {
          return data
         },
         onError: (error) => {
-          toast.error(`Failed to update status ${error}`)
+          toast.error(`Failed to update status ${error}`);
+          
         }, 
         onSuccess: ()=>{
           toast.success('Status Updated Successfully')
