@@ -14,7 +14,7 @@ const BidRequest = () => {
        isLoading, 
        isError,
         error,
-        refetch
+        
       } = useQuery( 
       {
         queryKey: ['bids'],
