@@ -5,8 +5,9 @@ import { useEffect, useState } from "react"
 
 const AllJobs = () => {
   // const [loadings, setLoading] = useState(true)
-  const [itemPerPage, setItemPerPage] = useState(6)
+  const [itemPerPage, setItemPerPage] = useState(3)
   const [count, setCount] = useState(0)
+  const [filter, setFilter] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [jobs, setJobs] = useState([])
   
@@ -14,26 +15,26 @@ const AllJobs = () => {
     useEffect(()=>{
       // setLoading(true)
       const getData = async()=>{
-        const {data} = await axios(`${import.meta.env.VITE_API_URL}/all-jobs?page=${currentPage}&size=${itemPerPage}`)
+        const {data} = await axios(`${import.meta.env.VITE_API_URL}/all-jobs?page=${currentPage}&size=${itemPerPage}&filter=${filter}`)
         setJobs(data)
        
       
       }
       getData()
       // setLoading(false)
-    },[currentPage, itemPerPage])
+    },[currentPage,filter, itemPerPage])
   
     useEffect(()=>{
       // setLoading(true)
       const getCount = async()=>{
-        const {data} = await axios(`${import.meta.env.VITE_API_URL}/jobs-count`)
+        const {data} = await axios(`${import.meta.env.VITE_API_URL}/jobs-count?filter=${filter}`)
         
         setCount(data.count)
         
       }
       getCount()
       // setLoading(false)
-    },[])
+    },[filter])
 
    const numberOfPage = Math.ceil(count/ itemPerPage)
   const pages = [...Array(numberOfPage).keys()].map(element => element + 1)
@@ -46,6 +47,11 @@ const AllJobs = () => {
         <div className='flex flex-col md:flex-row justify-center items-center gap-5 '>
           <div>
             <select
+            onChange={e=> {
+              setFilter(e.target.value)
+              setCurrentPage(1)
+            }}
+            value={filter}
               name='category'
               id='category'
               className='border p-4 rounded-lg'
@@ -125,7 +131,10 @@ const AllJobs = () => {
           </button>
         ))}
 {/* next btn */}
-        <button className='px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform bg-gray-200 rounded-md hover:bg-blue-500 disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:text-white disabled:cursor-not-allowed disabled:text-gray-500'>
+        <button
+        onClick={()=> handlePaginationBtn(currentPage + 1)}
+        disabled={currentPage === numberOfPage}
+         className='px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform bg-gray-200 rounded-md hover:bg-blue-500 disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:text-white disabled:cursor-not-allowed disabled:text-gray-500'>
           <div className='flex items-center -mx-1'>
             <span className='mx-1'>Next</span>
 
