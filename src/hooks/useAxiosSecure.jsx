@@ -1,44 +1,35 @@
 import axios from 'axios'
-import useAuth from './useAuth';
-import { useNavigate } from 'react-router-dom';
-
+import useAuth from './useAuth'
+import { useNavigate } from 'react-router-dom'
 const axiosSecure = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
-    withCredentials: true,
-    // headers: {
-    //     'Content-Type': 'application/json',
-    // },
-    // validateStatus: (status) => status >= 200 && status < 300,
-    // timeout: 10000,
-    // maxRedirects: 0,
-    // maxBodyLength: 10000000, // 10MB
-   
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
 })
+
 const useAxiosSecure = () => {
-    const {logOut} = useAuth()
-    const navigate = useNavigate()
+  const { logOut } = useAuth()
+  const navigate = useNavigate()
+  // interceptor
 
-    // interceptor
-    axiosSecure.interceptors.response.use(
-        res =>{
-            console.log('asar age ami ddksi', res)
-            return res
-        }
-        , 
+  //   Response Interceptor
+  axiosSecure.interceptors.response.use(
+    res => {
+      return res
+    },
+    async error => {
+      console.log('Error from axios interceptor', error.response)
+      if (error.response.status === 401 || error.response.status === 403) {
+        await logOut()
+        navigate('/login')
+      }
+      return Promise.reject(error)
+    }
+  )
 
-       
-      async (error) => {
+  //   Request Interceptor
+  //   axios.interceptors.request
 
-            if(error.response.status === 401 || error.response.status === 403){
-                 await logOut()
-                navigate('/login')
-            }
-            return Promise.reject(error)
-        }
-    )
+  return axiosSecure
+}
 
-
-    return axiosSecure
-};
-
-export default useAxiosSecure;
+export default useAxiosSecure
