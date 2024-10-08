@@ -8,6 +8,7 @@ const AllJobs = () => {
   const [itemPerPage, setItemPerPage] = useState(3)
   const [count, setCount] = useState(0)
   const [filter, setFilter] = useState('')
+  const [sort,setSort] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [jobs, setJobs] = useState([])
   
@@ -15,14 +16,14 @@ const AllJobs = () => {
     useEffect(()=>{
       // setLoading(true)
       const getData = async()=>{
-        const {data} = await axios(`${import.meta.env.VITE_API_URL}/all-jobs?page=${currentPage}&size=${itemPerPage}&filter=${filter}`)
+        const {data} = await axios(`${import.meta.env.VITE_API_URL}/all-jobs?page=${currentPage}&size=${itemPerPage}&filter=${filter}&sort=${sort}`)
         setJobs(data)
        
       
       }
       getData()
       // setLoading(false)
-    },[currentPage,filter, itemPerPage])
+    },[currentPage,filter, itemPerPage,sort])
   
     useEffect(()=>{
       // setLoading(true)
@@ -80,6 +81,11 @@ const AllJobs = () => {
           </form>
           <div>
             <select
+            onChange={e=> {
+              setSort(e.target.value)
+              setCurrentPage(1)
+            }}
+            value={sort}
               name='category'
               id='category'
               className='border p-4 rounded-md'
