@@ -9,6 +9,8 @@ const AllJobs = () => {
   const [count, setCount] = useState(0)
   const [filter, setFilter] = useState('')
   const [sort,setSort] = useState('')
+  const [search, setSearch] = useState('')
+  const [searchText, setSearchText] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [jobs, setJobs] = useState([])
   
@@ -16,37 +18,49 @@ const AllJobs = () => {
     useEffect(()=>{
       // setLoading(true)
       const getData = async()=>{
-        const {data} = await axios(`${import.meta.env.VITE_API_URL}/all-jobs?page=${currentPage}&size=${itemPerPage}&filter=${filter}&sort=${sort}`)
+        const {data} = await axios(`${import.meta.env.VITE_API_URL}/all-jobs?page=${currentPage}&size=${itemPerPage}&filter=${filter}&sort=${sort}&search=${search}`)
         setJobs(data)
        
       
       }
       getData()
       // setLoading(false)
-    },[currentPage,filter, itemPerPage,sort])
+    },[currentPage,filter, itemPerPage,sort,search])
   
     useEffect(()=>{
       // setLoading(true)
       const getCount = async()=>{
-        const {data} = await axios(`${import.meta.env.VITE_API_URL}/jobs-count?filter=${filter}`)
+        const {data} = await axios(`${import.meta.env.VITE_API_URL}/jobs-count?filter=${filter}&search=${search}`)
         
         setCount(data.count)
         
       }
       getCount()
       // setLoading(false)
-    },[filter])
+    },[filter,search])
 
    const numberOfPage = Math.ceil(count/ itemPerPage)
   const pages = [...Array(numberOfPage).keys()].map(element => element + 1)
+
   const handlePaginationBtn = (value) => {
     setCurrentPage(value)
   }
+
+
   const handleReset = ()=>{
     setCurrentPage(1)
     setFilter('')
     setSort('')
+    setSearch('')
+    setSearchText('')
   }
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // const name = e.target.search.value
+    setSearch(searchText)
+  }
+  // console.log(search)
+
   return (
     <div className='container px-6 py-10 mx-auto min-h-[calc(100vh-306px)] flex flex-col justify-between'>
       <div>
@@ -69,11 +83,13 @@ const AllJobs = () => {
             </select>
           </div>
 
-          <form>
+          <form onSubmit={handleSearch}>
             <div className='flex p-1 overflow-hidden border rounded-lg    focus-within:ring focus-within:ring-opacity-40 focus-within:border-blue-400 focus-within:ring-blue-300'>
               <input
                 className='px-6 py-2 text-gray-700 placeholder-gray-500 bg-white outline-none focus:placeholder-transparent'
                 type='text'
+                onChange={(e)=> setSearchText(e.target.value)}
+                value={searchText}
                 name='search'
                 placeholder='Enter Job Title'
                 aria-label='Enter Job Title'
