@@ -35,7 +35,7 @@ const AllJobs = () => {
     getCount()
   }, [filter, search])
 
-  console.log(count)
+
   const numberOfPages = Math.ceil(count / itemsPerPage)
   const pages = [...Array(numberOfPages).keys()].map(element => element + 1)
 
@@ -57,7 +57,7 @@ const AllJobs = () => {
     setSearch(searchText)
   }
 
-  console.log(search)
+ 
   return (
     <div className='container px-6 py-10 mx-auto min-h-[calc(100vh-306px)] flex flex-col justify-between'>
       <div>

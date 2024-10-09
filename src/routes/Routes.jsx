@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom'
 import Main from '../layouts/Main'
 import Home from '../pages/Home'
-// import Login from '../pages/Authentication/Login'
-// import Register from '../pages/Authentication/Register'
+import Login from '../pages/Authentication/Login'
+import Register from '../pages/Authentication/Register'
 import JobDetails from '../pages/JobDetails'
 import AddJob from '../pages/AddJob'
 import ErrorPage from '../pages/ErrorPage'
@@ -12,8 +12,6 @@ import PrivateRoute from './PrivateRoute'
 import MyBids from '../pages/MyBids'
 import BidRequests from '../pages/BidRequests'
 import AllJobs from '../pages/AllJobs'
-import Login from '../Pages/Authentication/Login'
-import Registration from '../Pages/Authentication/Register'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -30,7 +28,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/registration',
-        element: <Registration />,
+        element: <Register />,
       },
       {
         path: '/job/:id',

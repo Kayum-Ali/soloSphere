@@ -10,13 +10,7 @@ const BidRequests = () => {
     queryFn: () => getData(),
     queryKey: ['bids', user?.email],
   })
-  console.log(bids)
-  console.log(isLoading)
-  // const [bids, setBids] = useState([])
-
-  // useEffect(() => {
-  //   getData()
-  // }, [user])
+  
 
   const getData = async () => {
     const { data } = await axiosSecure(`/bid-requests/${user?.email}`)
@@ -31,11 +25,8 @@ const BidRequests = () => {
     },
     onSuccess: () => {
       console.log('Wow, data updated')
-      toast.success('Status Updated Successfully')
-      // refresh ui for latest data
-      // refetch()
-
-      // Kothin
+      toast.success('Updated')
+     
       queryClient.invalidateQueries({ queryKey: ['bids'] })
     },
   })
@@ -43,11 +34,11 @@ const BidRequests = () => {
   // handleStatus
   const handleStatus = async (id, prevStatus, status) => {
     console.log(id, prevStatus, status)
-    if (prevStatus === status) return toast.error('Status Already Updated')
+    if (prevStatus === status) return console.log('Sry vai.. hobena')
     await mutateAsync({ id, status })
   }
 
-  if (isLoading) return <p>Data is still loading......</p>
+  if (isLoading) return <span className="loading loading-bars loading-lg  flex items-center mx-auto justify-center my-20"></span>
 
   return (
     <section className='container px-4 mx-auto pt-12'>

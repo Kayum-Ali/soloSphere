@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 
 import { Link } from 'react-router-dom'
-// import toast from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import useAxiosSecure from '../hooks/useAxiosSecure'
 import useAuth from '../hooks/useAuth'
-import Swal from 'sweetalert2'
 
 const MyPostedJobs = () => {
   const axiosSecure = useAxiosSecure()
@@ -21,30 +20,17 @@ const MyPostedJobs = () => {
   }
 
   const handleDelete = async id => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-          try {
-               axiosSecure.delete(`/job/${id}`)
-              setJobs(jobs.filter(job => job._id!== id))
-          } catch (error) {
-              console.error(error)
-          }
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success"
-        });
-      }
-    });
-  
+    try {
+      const { data } = await axiosSecure.delete(`/job/${id}`)
+      console.log(data)
+      toast.success('Delete Successful')
+
+      //refresh ui
+      getData()
+    } catch (err) {
+      console.log(err.message)
+      toast.error(err.message)
+    }
   }
   return (
     <section className='container px-4 mx-auto pt-12'>

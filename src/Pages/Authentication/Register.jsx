@@ -9,7 +9,7 @@ const Registration = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const from = location.state || '/'
-  const { signInWithGoogle, createUser, updateUserProfile, setUser } =
+  const { signInWithGoogle, createUser, updateUserProfile, user, setUser } =
     useContext(AuthContext)
 
   const handleSignUp = async e => {
