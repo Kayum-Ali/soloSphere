@@ -42,11 +42,11 @@ const AddJob = () => {
         `${import.meta.env.VITE_API_URL}/job`,
         jobData
       )
-      console.log(data)
+     
       toast.success('Job Data Updated Successfully!')
       navigate('/my-posted-jobs')
     } catch (err) {
-      console.log(err)
+      toast.error(err)
     }
   }
   return (

@@ -24,7 +24,7 @@ const MyBids = () => {
       `${import.meta.env.VITE_API_URL}/bid/${id}`,
       { status }
     )
-    console.log(data)
+   
     getData()
   }
   return (

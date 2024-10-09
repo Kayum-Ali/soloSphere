@@ -20,11 +20,11 @@ const BidRequests = () => {
   const { mutateAsync } = useMutation({
     mutationFn: async ({ id, status }) => {
       const { data } = await axiosSecure.patch(`/bid/${id}`, { status })
-      console.log(data)
+     
       return data
     },
     onSuccess: () => {
-      console.log('Wow, data updated')
+     
       toast.success('Updated')
      
       queryClient.invalidateQueries({ queryKey: ['bids'] })
@@ -33,8 +33,8 @@ const BidRequests = () => {
 
   // handleStatus
   const handleStatus = async (id, prevStatus, status) => {
-    console.log(id, prevStatus, status)
-    if (prevStatus === status) return console.log('Sry vai.. hobena')
+    
+    if (prevStatus === status) return toast.error('Status Already Updated')
     await mutateAsync({ id, status })
   }
 

@@ -22,13 +22,13 @@ const MyPostedJobs = () => {
   const handleDelete = async id => {
     try {
       const { data } = await axiosSecure.delete(`/job/${id}`)
-      console.log(data)
+      
       toast.success('Delete Successful')
 
       //refresh ui
       getData()
     } catch (err) {
-      console.log(err.message)
+      
       toast.error(err.message)
     }
   }

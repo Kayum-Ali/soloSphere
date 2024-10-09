@@ -20,7 +20,7 @@ const Login = () => {
     try {
       // 1. google sign in from firebase
       const result = await signInWithGoogle()
-      console.log(result.user)
+    
 
       //2. get token from server using email
       const { data } = await axios.post(
@@ -30,11 +30,11 @@ const Login = () => {
         },
         { withCredentials: true }
       )
-      console.log(data)
+      
       toast.success('Signin Successful')
       navigate(from, { replace: true })
     } catch (err) {
-      console.log(err)
+     
       toast.error(err?.message)
     }
   }
@@ -45,7 +45,7 @@ const Login = () => {
     const form = e.target
     const email = form.email.value
     const pass = form.password.value
-    console.log({ email, pass })
+   
     try {
       //User Login
       const result = await signIn(email, pass)
@@ -57,11 +57,11 @@ const Login = () => {
         },
         { withCredentials: true }
       )
-      console.log(data)
+      
       navigate(from, { replace: true })
       toast.success('Signin Successful')
     } catch (err) {
-      console.log(err)
+      
       toast.error(err?.message)
     }
   }

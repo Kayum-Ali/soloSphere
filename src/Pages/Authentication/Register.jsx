@@ -19,7 +19,7 @@ const Registration = () => {
     const name = form.name.value
     const photo = form.photo.value
     const pass = form.password.value
-    console.log({ email, pass, name, photo })
+   
     try {
       //2. User Registration
       const result = await createUser(email, pass)
@@ -34,11 +34,11 @@ const Registration = () => {
         },
         { withCredentials: true }
       )
-      console.log(data)
+      
       navigate(from, { replace: true })
       toast.success('Signup Successful')
     } catch (err) {
-      console.log(err)
+      
       toast.error(err?.message)
     }
   }
@@ -47,7 +47,7 @@ const Registration = () => {
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithGoogle()
-      console.log(result.user)
+      
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL}/jwt`,
         {
@@ -55,11 +55,10 @@ const Registration = () => {
         },
         { withCredentials: true }
       )
-      console.log(data)
+     
       toast.success('Signin Successful')
       navigate(from, { replace: true })
     } catch (err) {
-      console.log(err)
       toast.error(err?.message)
     }
   }

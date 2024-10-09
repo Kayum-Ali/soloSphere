@@ -6,7 +6,7 @@ const PrivateRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext)
   const location = useLocation()
 
-  if (loading) return <p>Loading.....</p>
+  if (loading) return <p className='flex justify-center my-20'>Loading.....</p>
   if (user) return children
 
   return <Navigate to='/login' state={location.pathname} replace={true} />
